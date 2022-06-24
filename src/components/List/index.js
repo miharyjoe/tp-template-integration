@@ -1,9 +1,18 @@
 import "./style.css";
 import axios from "axios";
+import {useState} from "react";
 
 export function EmployeeList(props) {
   const { items } = props;
+  const [info, setInfo] = useState([items]);
   const update = axios.put("https://jsonplaceholder.typicode.com/users");
+  const deleteInfo = () => {
+    axios.delete("https://jsonplaceholder.typicode.com/users").then((item) => {
+      console.log(item.data)
+      setInfo(item.data)
+  }).catch(
+        (error) => console.log("error")
+  )}
   return (
     <div className="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
       <div className="dataTable-top">
@@ -60,7 +69,9 @@ export function EmployeeList(props) {
                 <td>{item.address.city}</td>
                 <td>{item.phone}</td>
                 <td>{item.company.name}</td>
-                <button className="btn" >Edit</button>
+                <td><button className="btn btn-primary" >Edit</button></td>
+                <td> <button className="btn btn-danger" onClick={() => deleteInfo()}>Delete</button></td>
+
               </tr>
             ))}
           </tbody>

@@ -6,7 +6,7 @@ import { EmployeeList } from "./components/List";
 import { Footer } from "./components/Footer";
 import { Card } from "./components/Card";
 import { useState } from "react";
-import Modal from "./components/Modal/Modal";
+import Modal from "./components/Modal/Modal.jsx";
 import axios from "axios";
 
 function App() {
