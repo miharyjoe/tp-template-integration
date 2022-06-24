@@ -1,24 +1,28 @@
-import "./App.css";
+import styles from "./App.css";
 import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { Breadcrumb } from "./components/Breadcrumb";
 import { EmployeeList } from "./components/List";
 import { Footer } from "./components/Footer";
 import { Card } from "./components/Card";
-import { faker } from "@faker-js/faker";
 import { useState } from "react";
+import Modal from "./components/Modal/Modal";
+import axios from "axios";
 
 function App() {
-  const employees = new Array(15).fill(null).map((_) => ({
-    name: faker.name.findName(),
-    position: faker.company.bsNoun(),
-    office: faker.address.cityName(),
-    age: faker.random.numeric(2),
-    startDate: new Date().toISOString().split("T")[0],
-    salary: faker.random.numeric(6),
-  }));
-
+  const [info, setInfo] = useState([]);
   const [sidebarClass, setSidebarClass] = useState("sb-nav-fixed");
+  const [isOpen, setIsOpen] = useState(false);
+
+
+  const employees = axios.get("https://jsonplaceholder.typicode.com/users")
+  employees.then((item) => {
+    console.log(item.data)
+    setInfo(item.data)
+  }).catch(
+      (error) => console.log("error")
+  )
+
 
   function toggleSidebarClass() {
     setSidebarClass(
@@ -27,6 +31,7 @@ function App() {
         : "sb-nav-fixed sb-sidenav-toggled"
     );
   }
+
 
   return (
     <div className={sidebarClass}>
@@ -47,12 +52,17 @@ function App() {
                 <a target="_blank" href="https://datatables.net/">
                   official DataTables documentation
                 </a>
-                .
+                .<br/>
+                <button className="btn btn-primary primaryBtn" onClick={() => setIsOpen(true)}>
+                  Open Modal
+                </button>
+                {isOpen && <Modal setIsOpen={setIsOpen} />}
               </Card>
               <Card title="DataTable Example">
-                <EmployeeList items={employees} />
+                <EmployeeList items={info} />
               </Card>
             </div>
+
           </main>
           <Footer />
         </div>

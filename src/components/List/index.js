@@ -1,7 +1,9 @@
 import "./style.css";
+import axios from "axios";
 
 export function EmployeeList(props) {
   const { items } = props;
+  const update = axios.put("https://jsonplaceholder.typicode.com/users");
   return (
     <div className="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
       <div className="dataTable-top">
@@ -32,32 +34,33 @@ export function EmployeeList(props) {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Company</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Company</th>
             </tr>
           </tfoot>
           <tbody>
             {(items || []).map((item) => (
-              <tr key={item.name}>
+              <tr key={`${item.id} + ${item.name}`} >
                 <td>{item.name}</td>
-                <td>{item.position}</td>
-                <td>{item.office}</td>
-                <td>{item.age}</td>
-                <td>{item.startDate}</td>
-                <td>{item.salary}</td>
+                <td>{item.username}</td>
+                <td>{item.email}</td>
+                <td>{item.address.city}</td>
+                <td>{item.phone}</td>
+                <td>{item.company.name}</td>
+                <button className="btn" >Edit</button>
               </tr>
             ))}
           </tbody>
